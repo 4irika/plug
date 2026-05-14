@@ -19,18 +19,13 @@
         Lampa.Storage.set(KEY_ACTIVE, url);
     }
 
-    function openMenu() {
+    function Component() {
         let list = getList();
         let active = getActive();
 
-        let modal = new Lampa.Modal({
-            title: 'Переключатель TorrServer',
-            onBack: () => Lampa.Controller.toggle('settings')
-        });
+        let html = $('<div class="settings-container"></div>');
 
-        let body = modal.body();
-
-        body.append('<div class="settings-param-title">Список серверов</div>');
+        html.append('<div class="settings-param-title">Список серверов</div>');
 
         list.forEach((url, i) => {
             let row = $('<div class="settings-param"></div>');
@@ -51,28 +46,29 @@
 
             row.append(input);
             row.append(btn);
-            body.append(row);
+            html.append(row);
         });
 
         let addBtn = $('<div class="settings-param settings-param--button"><div class="settings-param__name">Добавить сервер</div></div>');
         addBtn.on('click', () => {
             list.push('');
             saveList(list);
-            modal.update();
+            Lampa.SettingsApi.update();
         });
 
-        body.append(addBtn);
+        html.append(addBtn);
 
-        body.append('<div class="settings-param-title" style="margin-top:20px">Текущий активный сервер</div>');
-        body.append('<div class="settings-param"><div class="settings-param__name">' + (active || 'Не выбран') + '</div></div>');
+        html.append('<div class="settings-param-title" style="margin-top:20px">Текущий активный сервер</div>');
+        html.append('<div class="settings-param"><div class="settings-param__name">' + (active || 'Не выбран') + '</div></div>');
 
-        modal.create();
+        this.render = function (body) {
+            body.append(html);
+        };
     }
 
-    // Добавляем пункт в настройки
     Lampa.SettingsApi.addComponent({
-        title: 'Переключатель TorrServer',
-        onRender: openMenu
+        name: 'Переключатель TorrServer',
+        component: Component
     });
 
     Lampa.Noty.show('Переключатель TorrServer загружен');
