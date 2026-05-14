@@ -1,9 +1,0 @@
-{
-  "id": "torrswitch",
-  "version": "1.0.0",
-  "name": "Переключатель TorrServer",
-  "description": "Выбор активного TorrServer",
-  "author": "4irika",
-  "type": "module",
-  "entry": "torrswitch.js"
-}
